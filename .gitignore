@@ -12,6 +12,9 @@
 # next.js
 /.next/
 /out/
+*.config.mjs
+*.config.ts
+.eslintrc.json
 
 # production
 /build
