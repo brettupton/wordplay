@@ -15,6 +15,7 @@ const wordFrequency = (text: string) => {
   words.forEach(word => {
     const lower = word.toLowerCase()
     if (stopWords.includes(lower)) return
+    // Removes anything that isn't a character
     if (/[^a-zA-Z]+/g.test(lower)) return
 
     if (!freq[lower]) {
@@ -24,7 +25,7 @@ const wordFrequency = (text: string) => {
     }
   })
 
-  return { freq, raw: tokenizer.rawText() }
+  return freq
 }
 
 export default wordFrequency

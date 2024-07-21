@@ -1,38 +1,15 @@
-import path from 'path'
-import fs from 'fs'
-import PDFParser from 'pdf2json'
 import { NextResponse } from 'next/server'
-import { processText } from '@/utils/_markov'
-import { countNGrams } from '@/utils/_n-gram'
+import countNGrams from '@/utils/_n-gram'
+import getPDFText from '@/utils/pdf'
 
 export async function POST(request: Request) {
-    const pdfParser = new PDFParser(null, true)
-
     return new Promise(async (resolve) => {
         const formData = await request.formData()
         const file = formData.get('file') as File
 
-        const buffer = Buffer.from(await file.arrayBuffer())
-        const uploadPath = path.join(process.cwd(), 'public/uploads', `${file.name}`)
+        const text = await getPDFText(file)
+        const nGrams = countNGrams(text, 2)
 
-        fs.writeFile(uploadPath, buffer, (err) => {
-            if (err) {
-                console.error(err)
-                resolve(NextResponse.json({ error: err.message }))
-            }
-            pdfParser.loadPDF(uploadPath)
-        })
-
-        pdfParser.on("pdfParser_dataError", (errData) =>
-            resolve(NextResponse.json({ error: errData.parserError }))
-        )
-
-        pdfParser.on("pdfParser_dataReady", async (pdfData) => {
-            const text = pdfParser.getRawTextContent()
-            const { split } = await processText(text)
-            const nGrams = countNGrams(split, 2)
-
-            resolve(NextResponse.json({ nGrams: nGrams }))
-        })
+        resolve(NextResponse.json({ nGrams, raw: text }))
     })
 }
