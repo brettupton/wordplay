@@ -1,4 +1,6 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
+import fs from 'fs'
+import path from 'path'
 
 export default async function getPDFText(file: File): Promise<string> {
     GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.mjs'
@@ -15,7 +17,7 @@ export default async function getPDFText(file: File): Promise<string> {
             const textContent = await page.getTextContent({ includeMarkedContent: false })
 
             // Group text items by lines based on their vertical position
-            const lines = []
+            const lines: string[] = []
             let currentLine: string[] = []
             let lastY: null | number = null
             const lineThreshold = 5
@@ -40,6 +42,7 @@ export default async function getPDFText(file: File): Promise<string> {
 
             combinedText += lines.join('\n') + '\n'
         }
+
         return combinedText
     } catch (error) {
         console.error('Error extracting text:', error)

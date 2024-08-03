@@ -20,8 +20,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <div className="space-x-4">
                 <Link href="/" className="text-white hover:text-gray-200 transition-colors">Home</Link>
                 <Link href="/frequency" className="text-white hover:text-gray-200 transition-colors">Frequency</Link>
-                <Link href="/markov" className="text-white hover:text-gray-200 transition-colors">Markov</Link>
                 <Link href="/n-gram" className="text-white hover:text-gray-200 transition-colors">N-gram</Link>
+                <Link href="/markov" className="text-white hover:text-gray-200 transition-colors">Markov</Link>
               </div>
             </nav>
           </header>

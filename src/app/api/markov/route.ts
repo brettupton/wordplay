@@ -1,44 +1,38 @@
 import { NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs'
-import PDFParser from "pdf2json"
-import { processText, createChain } from '@/utils/_markov'
+import getPDFText from '@/utils/pdf'
+import { readDir, delDir } from '@/utils/filesys'
+import { createChain } from '@/utils/_markov'
+import Tokenizer from '@/utils/_tokenizer'
 
 export async function POST(request: Request) {
-    const pdfParser = new PDFParser(null, true)
-
     return new Promise(async (resolve) => {
         const formData = await request.formData()
         const file = formData.get('file') as File
-        const split: string[] = JSON.parse(formData.get('split') as string)
-        const selectedWords = JSON.parse(formData.get('selectedWords') as string)
+        const selectedWords: string[] = JSON.parse(formData.get('selected') as string)
         const chainLength = Number(formData.get('chainLength'))
+        const uploadPath = path.join(process.cwd(), 'public', 'uploads')
 
         if (file) {
-            const buffer = Buffer.from(await file.arrayBuffer())
+            const text = await getPDFText(file)
+            const tokenizer = new Tokenizer(text)
+            const punctTokens = tokenizer.punctTokens()
 
-            const uploadPath = path.join(process.cwd(), 'public/uploads', `${file.name}`)
-
-            fs.writeFile(uploadPath, buffer, (err) => {
+            await delDir(uploadPath)
+            fs.writeFile(path.join(uploadPath, `${file.name.split(".")[0]}.txt`), punctTokens.join(" "), 'utf-8', (err) => {
                 if (err) {
-                    console.error(err)
-                    resolve(NextResponse.json({ error: err.message }))
+                    resolve(NextResponse.error())
                 }
-                pdfParser.loadPDF(uploadPath)
             })
 
-            pdfParser.on("pdfParser_dataError", (errData) =>
-                resolve(NextResponse.json({ error: errData.parserError }))
-            )
-            pdfParser.on("pdfParser_dataReady", async (pdfData) => {
-                const text = pdfParser.getRawTextContent()
-                const { split } = await processText(text)
-
-                resolve(NextResponse.json({ split: split }))
-            })
+            resolve(NextResponse.json({ punctTokens }))
         } else {
-            const sentence = await createChain(split, selectedWords, selectedWords.length, chainLength)
-            resolve(NextResponse.json({ sentence: sentence }))
+            const wordString = await readDir(uploadPath)
+            const punctTokens = wordString.split(" ")
+            const chain = await createChain(punctTokens, selectedWords, chainLength)
+
+            resolve(NextResponse.json({ chain }))
         }
     })
 }
