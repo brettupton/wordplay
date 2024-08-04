@@ -29,4 +29,18 @@ export default class Tokenizer {
 
         return tokens
     }
+
+    public uniqueWordTokens() {
+        const pageNums = this.text.replace(/(?:\\n+\d+)/gm, '')
+        const markup = pageNums.replace(/(?:\\+[a-z])/gm, ' ')
+        const quotes = markup.replace(/“|”|"/gm, " \" ")
+        const hyphens = quotes.replace(/-\s*/g, '')
+        const punct = hyphens.replace(/[^a-zA-z]/g, " ")
+        const double = punct.replace(/\s{2,}/g, ' ')
+        const tokens = double.split(" ").filter(token => token !== "")
+
+        const unique = Array.from(new Set(tokens))
+
+        return unique
+    }
 }

@@ -1,4 +1,4 @@
-import stopWords from "./stopwords"
+import stopWords from "./info/stopwords"
 import Tokenizer from "./_tokenizer"
 
 interface words {

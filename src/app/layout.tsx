@@ -22,6 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/frequency" className="text-white hover:text-gray-200 transition-colors">Frequency</Link>
                 <Link href="/n-gram" className="text-white hover:text-gray-200 transition-colors">N-gram</Link>
                 <Link href="/markov" className="text-white hover:text-gray-200 transition-colors">Markov</Link>
+                <Link href="/phonetic" className="text-white hover:text-gray-200 transition-colors">Phonetic</Link>
               </div>
             </nav>
           </header>
