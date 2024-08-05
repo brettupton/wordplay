@@ -1,21 +1,54 @@
+'use client'
+
+import { Gentium_Plus } from "next/font/google"
+import { useState, useRef } from "react"
+import { IPASounds } from "@/utils/info/IPACharts"
+
 interface IPATableProps {
-    label: string
-    header: string[]
+    topLabel: string
     IPAData: IPAChart
-    first?: boolean
+    bottomLabel?: string
 }
 
-const IPATable = ({ label, header, IPAData, first }: IPATableProps) => {
+const gentium = Gentium_Plus({ weight: "700", subsets: ["latin"] })
+
+const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
+    const header = Object.keys(IPAData[Object.keys(IPAData)[0]])
+
+    const [audioKey, setAudioKey] = useState(0) // A key to force re-render
+    const audioRef = useRef<HTMLAudioElement | null>(null)
+
+    const handleSymbolClick = (symbol: string) => {
+        if (IPASounds[symbol]) {
+            const src = IPASounds[symbol]
+
+            if (audioRef.current) {
+                audioRef.current.pause()
+                audioRef.current.currentTime = 0
+            }
+
+            // Update the key to force the creation of a new audio element
+            setAudioKey(prevKey => prevKey + 1)
+
+            const newAudio = new Audio(src)
+            newAudio.volume = 0.3
+            newAudio.play()
+
+            // Set the ref to the new audio element
+            audioRef.current = newAudio
+        }
+    }
+
     return (
         <div className="flex flex-col">
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
-                        <span className="text-sm">{label}</span>
+                        <span className="text-sm">{topLabel}</span>
                         <table
-                            className="min-w-full border border-neutral-200 text-center text-sm font-light text-surface dark:text-white">
+                            className="min-w-full border border-neutral-200 bg-gray-700 text-center text-sm font-light text-surface text-white">
                             <thead
-                                className="border-b border-neutral-200 font-medium">
+                                className="border-b border-neutral-200 bg-gray-800 font-medium">
                                 <tr>
                                     <th
                                         scope="col"
@@ -26,7 +59,7 @@ const IPATable = ({ label, header, IPAData, first }: IPATableProps) => {
                                         return (
                                             <th
                                                 scope="col" key={index}
-                                                className="border-e border-neutral-200 px-5 py-2">
+                                                className="border-e border-neutral-200 px-4 py-2">
                                                 {place}
                                             </th>
                                         )
@@ -38,18 +71,20 @@ const IPATable = ({ label, header, IPAData, first }: IPATableProps) => {
                                     return (
                                         <tr className="border-b border-neutral-200" key={index}>
                                             <td
-                                                className="whitespace-nowrap border-e border-neutral-200 px-2 py-2 font-medium">
+                                                className="whitespace-nowrap border-e border-neutral-200 bg-gray-800 px-2 py-2 font-medium">
                                                 {manner}
                                             </td>
                                             {Object.keys(IPAData[manner]).map((place, index) => {
                                                 return (
                                                     <td key={index}
-                                                        className="whitespace-nowrap border-e border-neutral-200 px-2 py-2 font-medium hover:bg-gray-500">
-                                                        {IPAData[manner][place].map((symbol, index) => {
-                                                            return (
-                                                                <span key={index} className="px-2">{symbol}</span>
-                                                            )
-                                                        })}
+                                                        className={`${gentium.className} whitespace-nowrap border-e border-neutral-200 text-lg px-2 py-2 font-medium hover:bg-gray-500`}>
+                                                        <div className="flex justify-between">
+                                                            {IPAData[manner][place].map((symbol, index) => {
+                                                                return (
+                                                                    <button key={index} className="w-1/2" onClick={() => handleSymbolClick(symbol)}>{symbol}</button>
+                                                                )
+                                                            })}
+                                                        </div>
                                                     </td>
                                                 )
                                             })}
@@ -58,8 +93,8 @@ const IPATable = ({ label, header, IPAData, first }: IPATableProps) => {
                                 })}
                             </tbody>
                         </table>
-                        {first &&
-                            <div className="text-xs w-full text-right italic">*American English</div>
+                        {bottomLabel &&
+                            <div className="text-xs w-full text-right italic">{bottomLabel}</div>
                         }
                     </div>
                 </div>
