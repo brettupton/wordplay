@@ -1,35 +1,34 @@
-import Link from "next/link"
+import Image from 'next/image'
+import Link from 'next/link'
+import WordPlayLogo from '../../public/images/wordplay.png'
+import LinkButton from '@/components/LinkButton'
 
 export default function Home() {
-  return (
-    <div className="flex w-full h-full justify-center items-center">
-      <div className="flex flex-col items-stretch w-full max-w-xs">
-        <Link href="/frequency" className="text-center text-center relative inline-flex items-center justify-center p-0.5 mb-4 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <span className="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Frequency
-          </span>
-        </Link>
-        <Link href="/n-gram" className="text-center relative inline-flex items-center justify-center p-0.5 mb-4 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <span className="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            N-gram
-          </span>
-        </Link>
-        <Link href="/markov" className="text-center relative inline-flex items-center justify-center p-0.5 mb-4 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <span className="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Markov Chain
-          </span>
-        </Link>
-        <Link href="/phonetic" className="text-center relative inline-flex items-center justify-center p-0.5 mb-4 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <span className="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Phonetic
-          </span>
-        </Link>
-        <Link href="/" className="text-center relative inline-flex items-center justify-center p-0.5 mb-4 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <span className="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Complexity
-          </span>
-        </Link>
-      </div>
-    </div>
-  )
+    return (
+        <div className="flex flex-col w-full h-full justify-center items-center">
+            <div className="flex w-1/2 justify-around text-2xl">
+                <div className="flex">
+                    <LinkButton href="frequency" text="Frequency" />
+                </div>
+                <div className="flex">
+                    <LinkButton href="phonetic" text="Phonetic" />
+                </div>
+            </div>
+            <div className="flex">
+                <Image
+                    src={WordPlayLogo}
+                    height={200}
+                    width={200}
+                    alt="WordPlay Logo" />
+            </div>
+            <div className="flex w-1/2 justify-around text-2xl">
+                <div className="flex">
+                    <LinkButton href="n-gram" text="N-Gram" />
+                </div>
+                <div className="flex">
+                    <LinkButton href="markov" text="Markov" />
+                </div>
+            </div>
+        </div>
+    )
 }

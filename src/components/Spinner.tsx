@@ -1,5 +1,5 @@
 interface SpinnerProps {
-    message: string
+    message?: string
 }
 
 export default function Spinner({ message }: SpinnerProps) {
@@ -14,7 +14,7 @@ export default function Spinner({ message }: SpinnerProps) {
                 </span>
             </div>
             <div>
-                {message}
+                {message || ""}
             </div>
         </div>
     )

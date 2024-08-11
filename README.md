@@ -1,6 +1,6 @@
 # WordPlay
 
-<img src="./public/delta.png" alt="Logo" width="100"/>
+<img src="./public/images/delta.png" alt="Logo" width="100"/>
 
 ## Overview
 

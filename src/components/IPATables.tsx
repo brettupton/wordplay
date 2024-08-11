@@ -3,7 +3,7 @@ import IPATable from "./IPATable";
 
 export default function IPATables() {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             <div className="flex overflow-x-auto">
                 <IPATable topLabel="Consonants" IPAData={IPAConsonant} bottomLabel="*American English" />
             </div>
