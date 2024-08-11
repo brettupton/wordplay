@@ -18,11 +18,6 @@ The primary way of interaction is by uploading a PDF, collecting tokens from the
 
 ## Installation
 
-### Prerequisites
-
-- Node.js (version 22.0.0)
-- npm (version ^10.5.1)
-
 ### Setup
 
 1. Clone the repository:
