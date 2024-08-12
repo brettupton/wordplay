@@ -13,30 +13,11 @@ interface IPATableProps {
 const gentium = Gentium_Plus({ weight: "700", subsets: ["latin"] })
 
 const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
-    const header = Object.keys(IPAData[Object.keys(IPAData)[0]])
+    const places = Object.keys(IPAData)
+    const manners = Object.keys(IPAData[places[0]])
 
-    const [audioKey, setAudioKey] = useState(0) // A key to force re-render
-    const audioRef = useRef<HTMLAudioElement | null>(null)
+    const handleSymbolClick = async (symbol: string) => {
 
-    const handleSymbolClick = (symbol: string) => {
-        if (IPASounds[symbol]) {
-            const src = IPASounds[symbol]
-
-            if (audioRef.current) {
-                audioRef.current.pause()
-                audioRef.current.currentTime = 0
-            }
-
-            // Update the key to force the creation of a new audio element
-            setAudioKey(prevKey => prevKey + 1)
-
-            const newAudio = new Audio(src)
-            newAudio.volume = 0.3
-            newAudio.play()
-
-            // Set the ref to the new audio element
-            audioRef.current = newAudio
-        }
     }
 
     return (
@@ -53,9 +34,8 @@ const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
                                     <th
                                         scope="col"
                                         className="border-e border-neutral-200">
-
                                     </th>
-                                    {header.map((place, index) => {
+                                    {places.map((place, index) => {
                                         return (
                                             <th
                                                 scope="col" key={index}
@@ -67,24 +47,21 @@ const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(IPAData).map((manner, index) => {
+                                {manners.map((manner, index) => {
                                     return (
                                         <tr className="border-b border-neutral-200" key={index}>
-                                            <td
-                                                className="whitespace-nowrap border-e border-neutral-200 bg-gray-800 px-2 py-2 font-medium">
+                                            <td className="whitespace-nowrap border-e border-neutral-200 bg-gray-800 px-2 py-2 font-medium">
                                                 {manner}
                                             </td>
-                                            {Object.keys(IPAData[manner]).map((place, index) => {
+                                            {places.map((place, index) => {
                                                 return (
                                                     <td key={index}
                                                         className={`${gentium.className} whitespace-nowrap border-e border-neutral-200 text-lg px-2 py-2 font-medium hover:bg-gray-500`}>
-                                                        <div className="flex justify-between">
-                                                            {IPAData[manner][place].map((symbol, index) => {
-                                                                return (
-                                                                    <button key={index} className="w-1/2" onClick={() => handleSymbolClick(symbol)}>{symbol}</button>
-                                                                )
-                                                            })}
-                                                        </div>
+                                                        {IPAData[place][manner].map((symbol, index) => {
+                                                            return (
+                                                                <button key={index} className="w-1/2" onClick={() => handleSymbolClick(symbol)}>{symbol}</button>
+                                                            )
+                                                        })}
                                                     </td>
                                                 )
                                             })}
@@ -94,7 +71,7 @@ const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
                             </tbody>
                         </table>
                         {bottomLabel &&
-                            <div className="text-xs w-full text-right italic">{bottomLabel}</div>
+                            <div className="px-2 text-xs text-right w-full italic">{bottomLabel}</div>
                         }
                     </div>
                 </div>

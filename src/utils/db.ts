@@ -12,7 +12,7 @@ const db = new Database(path.join(process.cwd(), 'src', 'db', 'cmudict.db'), OPE
     }
 })
 
-const getPhonetic = (word: string): Promise<string> => {
+const getPhonetic = (word: string): Promise<Phonetics> => {
     return new Promise((resolve, reject) => {
         const param = word.toUpperCase().trim()
 
@@ -20,11 +20,7 @@ const getPhonetic = (word: string): Promise<string> => {
             if (err) {
                 reject(err)
             }
-            if (row) {
-                resolve(row.phonetic)
-            } else {
-                reject("Phonetic not found")
-            }
+            resolve({ word: param, phonetic: row?.phonetic || word })
         })
     })
 }

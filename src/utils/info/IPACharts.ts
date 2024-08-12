@@ -1,96 +1,169 @@
-const IPAVowel: IPAChart = {
-    Front: {
-        High: ['i', 'ɪ'],
-        Mid: ['e', 'ɛ'],
-        Low: ['æ', '']
+export const IPAVowel: IPAChart = {
+    Close: {
+        Front: ['i', 'y'],
+        '': ['', ''],
+        Central: ['ɨ', 'ʉ'],
+        '': ['', ''],
+        Back: ['ɯ', 'u']
     },
-    Central: {
-        High: ['', ''],
-        Mid: ['ə', 'ɜ'],
-        Low: ['ʌ', '']
+    '': {
+        Front: ['', ''],
+        '': ['ɪ', 'ʏ'],
+        Central: ['', ''],
+        '': ['', 'ʊ'],
+        Back: ['', '']
     },
-    Back: {
-        High: ['u', 'ʊ'],
-        Mid: ['o', 'ɔ'],
-        Low: ['ɑ', '']
+    'Close-mid': {
+        Front: ['e', 'ø'],
+        '': ['', ''],
+        Central: ['ɘ', 'ɵ'],
+        '': ['', ''],
+        Back: ['ɤ', 'o']
+    },
+    '': {
+        Front: ['', ''],
+        '': ['', ''],
+        Central: ['', 'ə'],
+        '': ['', ''],
+        Back: ['', '']
+    },
+    'Open-mid': {
+        Front: ['ɛ', 'œ'],
+        '': ['', ''],
+        Central: ['ɜ', 'ɞ'],
+        '': ['', ''],
+        Back: ['ʌ', 'ɔ']
+    },
+    '': {
+        Front: ['æ', ''],
+        '': ['', ''],
+        Central: ['', 'ɐ'],
+        '': ['', ''],
+        Back: ['', '']
+    },
+    Open: {
+        Front: ['a', 'ɶ'],
+        '': ['', ''],
+        Central: ['', ''],
+        '': ['', ''],
+        Back: ['ɑ', 'ɒ']
     }
 }
 
-const IPAConsonant: IPAChart = {
-    Plosive: {
-        Bilabial: ['p', 'b'],
-        Labiodental: ['', ''],
-        Dental: ['', ''],
-        Alveolar: ['t', 'd'],
-        Postalveolar: ['', ''],
-        Palatal: ['', ''],
-        Velar: ['k', 'g'],
-        Glottal: ['ʔ', '']
+export const IPAPulmonicConsonant: IPAChart = {
+    Bilabial: {
+        Plosive: ['p', 'b'],
+        Nasal: ['', 'm'],
+        Trill: ['', 'ʙ'],
+        'Tap or Flap': ['', ''],
+        Fricative: ['ɸ', 'β'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
     },
-    Nasal: {
-        Bilabial: ['m', ''],
-        Labiodental: ['', ''],
-        Dental: ['', ''],
-        Alveolar: ['n', ''],
-        Postalveolar: ['', ''],
-        Palatal: ['', ''],
-        Velar: ['ŋ', ''],
-        Glottal: ['', '']
+    Labiodental: {
+        Plosive: ['', ''],
+        Nasal: ['', 'ɱ'],
+        Trill: ['', ''],
+        'Tap or Flap': ['', 'ⱱ'],
+        Fricative: ['f', 'v'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', 'ʋ'],
+        'Lateral Approximant': ['', '']
     },
-    'Tap or Flap': {
-        Bilabial: ['', ''],
-        Labiodental: ['', ''],
-        Dental: ['', ''],
-        Alveolar: ['ɾ', ''],
-        Postalveolar: ['', ''],
-        Palatal: ['', ''],
-        Velar: ['', ''],
-        Glottal: ['', '']
+    Dental: {
+        Plosive: ['', ''],
+        Nasal: ['', ''],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['θ', 'ð'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
     },
-    Fricative: {
-        Bilabial: ['', ''],
-        Labiodental: ['f', 'v'],
-        Dental: ['θ', 'ð'],
-        Alveolar: ['s', 'z'],
-        Postalveolar: ['ʃ', 'ʒ'],
-        Palatal: ['', ''],
-        Velar: ['', ''],
-        Glottal: ['h', '']
+    Alveolar: {
+        Plosive: ['t', 'd'],
+        Nasal: ['', 'n'],
+        Trill: ['', 'r'],
+        'Tap or Flap': ['', 'ɾ'],
+        Fricative: ['s', 'z'],
+        'Lateral Fricative': ['ɬ', 'ɮ'],
+        Approximant: ['', 'ɹ'],
+        'Lateral Approximant': ['', 'l']
     },
-    Approximant: {
-        Bilabial: ['', ''],
-        Labiodental: ['', ''],
-        Dental: ['', ''],
-        Alveolar: ['ɹ', ''],
-        Postalveolar: ['', ''],
-        Palatal: ['j', ''],
-        Velar: ['w', ''],
-        Glottal: ['', '']
+    Postalveolar: {
+        Plosive: ['', ''],
+        Nasal: ['', ''],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['ʃ', 'ʒ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
     },
-    'Lat. Approximant': {
-        Bilabial: ['', ''],
-        Labiodental: ['', ''],
-        Dental: ['', ''],
-        Alveolar: ['l', ''],
-        Postalveolar: ['', ''],
-        Palatal: ['', ''],
-        Velar: ['', ''],
-        Glottal: ['', '']
+    Retroflex: {
+        Plosive: ['ʈ', 'ɖ'],
+        Nasal: ['', 'ɳ'],
+        Trill: ['', ''],
+        'Tap or Flap': ['', 'ɽ'],
+        Fricative: ['ʂ', 'ʐ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', 'ɻ'],
+        'Lateral Approximant': ['', 'ɭ']
+    },
+    Palatal: {
+        Plosive: ['c', 'ɟ'],
+        Nasal: ['', 'ɲ'],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['ç', 'ʝ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', 'j'],
+        'Lateral Approximant': ['', 'ʎ']
+    },
+    Velar: {
+        Plosive: ['k', 'ɡ'],
+        Nasal: ['', 'ŋ'],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['x', 'ɣ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', 'ɰ'],
+        'Lateral Approximant': ['', 'ʟ']
+    },
+    Uvular: {
+        Plosive: ['q', 'ɢ'],
+        Nasal: ['', 'ɴ'],
+        Trill: ['', 'ʀ'],
+        'Tap or Flap': ['', ''],
+        Fricative: ['χ', 'ʁ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
+    },
+    Pharyngeal: {
+        Plosive: ['', ''],
+        Nasal: ['', ''],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['ħ', 'ʕ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
+    },
+    Glottal: {
+        Plosive: ['ʔ', ''],
+        Nasal: ['', ''],
+        Trill: ['', ''],
+        'Tap or Flap': ['', ''],
+        Fricative: ['h', 'ɦ'],
+        'Lateral Fricative': ['', ''],
+        Approximant: ['', ''],
+        'Lateral Approximant': ['', '']
     }
 }
 
-const IPADiphthong: IPAChart = {
-    Closing: {
-        Front: ['aɪ', 'eɪ'],
-        Central: ['aʊ', 'oʊ']
-    },
-    Centering: {
-        Front: ['ɪə', 'eə'],
-        Central: ['', '']
-    }
-}
-
-const IPASounds: { [symbol: string]: string } = {
+export const IPASounds: { [symbol: string]: string } = {
     'i': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/9/91/Close_front_unrounded_vowel.ogg/Close_front_unrounded_vowel.ogg.mp3',
     'ɪ': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/4/4c/Near-close_near-front_unrounded_vowel.ogg/Near-close_near-front_unrounded_vowel.ogg.mp3',
     'e': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/6c/Close-mid_front_unrounded_vowel.ogg/Close-mid_front_unrounded_vowel.ogg.mp3',
@@ -129,6 +202,3 @@ const IPASounds: { [symbol: string]: string } = {
     'w': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f2/Voiced_labio-velar_approximant.ogg/Voiced_labio-velar_approximant.ogg.mp3',
     'l': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bc/Alveolar_lateral_approximant.ogg/Alveolar_lateral_approximant.ogg.mp3'
 }
-
-
-export { IPAConsonant, IPAVowel, IPADiphthong, IPASounds }

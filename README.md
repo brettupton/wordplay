@@ -20,7 +20,7 @@ The primary way of interaction is by uploading a PDF, collecting tokens from the
 
 ### Setup
 
-1. Clone the repository:
+1. Clone the repository
 
 ```sh
 git clone https://github.com/brettupton/wordplay.git

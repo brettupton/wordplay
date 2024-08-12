@@ -5,20 +5,32 @@ import getPDFText from '@/utils/pdf'
 import { delDir } from '@/utils/filesys'
 import { addPhonetic, getPhonetic, getPhonetics } from '@/utils/db'
 import Tokenizer from '@/utils/_tokenizer'
+import meSpeak from 'mespeak';
+import enUsVoice from 'mespeak/voices/en/en-us.json'
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('query')
+    const symbol = searchParams.get('symbol')
 
     if (query) {
         try {
-            const result = await getPhonetic(query.toUpperCase())
+            const result = await getPhonetic(query)
 
-            return new Response(result, { status: 200 })
+            return new Response(JSON.stringify(result), { status: 200 })
         } catch (err: any) {
-            return new Response(err, { status: 200 })
+            return new Response(err, { status: 400 })
         }
+    } else if (symbol) {
+        meSpeak.loadVoice(enUsVoice)
+        fs.writeFile(path.join(process.cwd(), 'public', 'uploads', 'sound.wav'), meSpeak.speak(`${symbol}`, { rawdata: "buffer" }), (err: any) => {
+            if (err) {
+                console.error(err)
+            }
+        })
+        return new Response(null, { status: 200 })
     }
+    return new Response('No request query', { status: 400 })
 }
 
 export async function PUT(request: NextRequest) {
@@ -28,7 +40,7 @@ export async function PUT(request: NextRequest) {
     try {
         await addPhonetic(word.toUpperCase(), phonetic)
 
-        return new Response('', { status: 200 })
+        return new Response('', { status: 201 })
     } catch (err: any) {
         return new Response(err, { status: 200 })
     }
