@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs'
 import getPDFText from '@/utils/pdf'
-import { readDir, delDir } from '@/utils/filesys'
+import { readDir, delDir } from '@/utils/fileSys'
 import { createChain } from '@/utils/_markov'
 import Tokenizer from '@/utils/_tokenizer'
 

@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
-import PDFForm from '@/components/PDFForm'
+import FileForm from '@/components/FileForm'
 import Spinner from '@/components/Spinner'
 
 interface nGrams {
@@ -119,7 +119,7 @@ export default function NGram() {
             {
                 nGramArr.length <= 0
                     ?
-                    <PDFForm updateStates={updateStates} route="n-gram" />
+                    <FileForm updateStates={updateStates} route="n-gram" />
                     :
                     <div className='flex flex-col w-full'>
                         <div className='flex justify-between w-full'>

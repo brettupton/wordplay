@@ -1,6 +1,6 @@
 'use client'
 
-import PDFForm from "@/components/PDFForm"
+import FileForm from "@/components/FileForm"
 import TextArea from "@/components/TextArea"
 import { useState } from "react"
 
@@ -27,7 +27,7 @@ export default function ReadPhonetic() {
     return (
         <div className="flex w-full h-full justify-center mt-5 gap-5">
             {phonetics.length <= 0 ?
-                <PDFForm updateStates={updateStates} route="phonetic" />
+                <FileForm updateStates={updateStates} route="phonetic" />
                 :
                 <div className="flex flex-col">
                     <div className="flex">

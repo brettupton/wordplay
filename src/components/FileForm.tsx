@@ -3,12 +3,12 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import Spinner from "./Spinner"
 
-interface PDFFormProps {
+interface FileFormProps {
     updateStates: (result: any) => void
     route: string
 }
 
-export default function PDFForm({ updateStates, route }: PDFFormProps) {
+export default function FileForm({ updateStates, route }: FileFormProps) {
     const [file, setFile] = useState<File | undefined>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -40,7 +40,8 @@ export default function PDFForm({ updateStates, route }: PDFFormProps) {
                 updateStates(result)
                 setIsLoading(false)
             } else {
-                throw response.statusText
+                console.error(response.statusText)
+                setIsLoading(false)
             }
         } catch (error) {
             console.error('Error uploading file:', error)

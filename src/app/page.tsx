@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import WordPlayLogo from '../../public/images/wordplay.png'
 import LinkButton from '@/components/LinkButton'
 
 export default function Home() {
+
     return (
         <div className="flex flex-col w-full h-full justify-center items-center">
             <div className="flex w-1/2 justify-around text-2xl">

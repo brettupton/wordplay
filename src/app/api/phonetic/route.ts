@@ -2,16 +2,13 @@ import path from 'path'
 import fs from 'fs'
 import { NextResponse, type NextRequest } from 'next/server'
 import getPDFText from '@/utils/pdf'
-import { delDir } from '@/utils/filesys'
+import { delDir } from '@/utils/fileSys'
 import { addPhonetic, getPhonetic, getPhonetics } from '@/utils/db'
 import Tokenizer from '@/utils/_tokenizer'
-import meSpeak from 'mespeak';
-import enUsVoice from 'mespeak/voices/en/en-us.json'
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('query')
-    const symbol = searchParams.get('symbol')
 
     if (query) {
         try {
@@ -21,15 +18,8 @@ export async function GET(request: NextRequest) {
         } catch (err: any) {
             return new Response(err, { status: 400 })
         }
-    } else if (symbol) {
-        meSpeak.loadVoice(enUsVoice)
-        fs.writeFile(path.join(process.cwd(), 'public', 'uploads', 'sound.wav'), meSpeak.speak(`${symbol}`, { rawdata: "buffer" }), (err: any) => {
-            if (err) {
-                console.error(err)
-            }
-        })
-        return new Response(null, { status: 200 })
     }
+
     return new Response('No request query', { status: 400 })
 }
 
@@ -56,7 +46,7 @@ export async function POST(request: Request) {
             const text = await getPDFText(file)
             let phoneticText = text
             const tokenizer = new Tokenizer(text)
-            const uniqueWordTokens = tokenizer.uniqueWordTokens()
+            const uniqueWordTokens = tokenizer.wordTokens('unique')
             const phonetics = await getPhonetics(uniqueWordTokens)
 
             phonetics.forEach(ipa => {

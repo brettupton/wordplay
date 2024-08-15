@@ -1,31 +1,35 @@
 import stopWords from "./info/stopwords"
 import Tokenizer from "./_tokenizer"
 
-interface words {
-  [word: string]: {
-    count: number
-  }
+interface frequency {
+  [word: string]: number
 }
 
-const wordFrequency = (text: string) => {
+const wordFrequency = (text: string, keepStopWords?: boolean, keepCasing?: boolean) => {
   const tokenizer = new Tokenizer(text)
   const words = tokenizer.wordTokens()
-  const freq: words = {}
+  const freq: frequency = {}
 
   words.forEach(word => {
-    const lower = word.toLowerCase()
-    if (stopWords.includes(lower)) return
-    // Removes anything that isn't a character
-    if (/[^a-zA-Z]+/g.test(lower)) return
+    if (!keepCasing) {
+      word = word.toLowerCase()
+    }
 
-    if (!freq[lower]) {
-      freq[lower] = { count: 1 }
+    if (!keepStopWords && stopWords.includes(word)) return
+
+    // Removes anything that isn't a character
+    if (/[^a-zA-Z]+/g.test(word)) return
+    // Removes lone characters except for 'a' & 'i'
+    if (/(?<!\w)[^ai](?!\w)/gm.test(word)) return
+
+    if (!freq[word]) {
+      freq[word] = 1
     } else {
-      freq[lower].count++
+      freq[word]++
     }
   })
 
-  return freq
+  return Object.entries(freq)
 }
 
 export default wordFrequency

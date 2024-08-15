@@ -6,3 +6,8 @@ type IPAChart = {
         [place: string]: string[]
     }
 }
+
+type WindowSize = {
+    width: number
+    height: number
+}

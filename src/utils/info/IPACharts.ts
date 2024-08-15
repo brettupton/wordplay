@@ -1,4 +1,4 @@
-export const IPAVowel: IPAChart = {
+const vowels: IPAChart = {
     Close: {
         Front: ['i', 'y'],
         '': ['', ''],
@@ -50,7 +50,7 @@ export const IPAVowel: IPAChart = {
     }
 }
 
-export const IPAPulmonicConsonant: IPAChart = {
+const pulmonicConsonant: IPAChart = {
     Bilabial: {
         Plosive: ['p', 'b'],
         Nasal: ['', 'm'],
@@ -163,7 +163,37 @@ export const IPAPulmonicConsonant: IPAChart = {
     }
 }
 
-export const IPASounds: { [symbol: string]: string } = {
+const clicks: IPAChart = {
+    Clicks: {
+        Bilabial: ['ʘ'],
+        Dental: ['ǀ'],
+        '(Post)alveolar': ['ǃ'],
+        Palatoalveolar: ['ǂ'],
+        'Alveolar lateral': ['ǁ']
+    }
+}
+
+const voicedImplosives: IPAChart = {
+    'Voiced Implosives': {
+        Bibabial: ['ɓ'],
+        'Dental/alveolar': ['ɗ'],
+        Palatal: ['ʄ'],
+        Velar: ['ɠ'],
+        Uvular: ['ʛ']
+    }
+}
+
+const ejectives: IPAChart = {
+    Ejectives: {
+        'Examples:': ['ʼ'],
+        Bilabal: ['pʼ'],
+        'Dental/alveolar': ['tʼ'],
+        Velar: ['kʼ'],
+        'Alveolar fricative': ['sʼ']
+    }
+}
+
+const IPASounds: { [symbol: string]: string } = {
     'i': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/9/91/Close_front_unrounded_vowel.ogg/Close_front_unrounded_vowel.ogg.mp3',
     'ɪ': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/4/4c/Near-close_near-front_unrounded_vowel.ogg/Near-close_near-front_unrounded_vowel.ogg.mp3',
     'e': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/6c/Close-mid_front_unrounded_vowel.ogg/Close-mid_front_unrounded_vowel.ogg.mp3',
@@ -201,4 +231,12 @@ export const IPASounds: { [symbol: string]: string } = {
     'j': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/e8/Palatal_approximant.ogg/Palatal_approximant.ogg.mp3',
     'w': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f2/Voiced_labio-velar_approximant.ogg/Voiced_labio-velar_approximant.ogg.mp3',
     'l': 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bc/Alveolar_lateral_approximant.ogg/Alveolar_lateral_approximant.ogg.mp3'
+}
+
+export const IPACharts = {
+    vowels,
+    pulmonicConsonant,
+    clicks,
+    voicedImplosives,
+    ejectives
 }

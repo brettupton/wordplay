@@ -5,7 +5,7 @@ import { useState, useRef } from "react"
 import { IPASounds } from "@/utils/info/IPACharts"
 
 interface IPATableProps {
-    topLabel: string
+    topLabel?: string
     IPAData: IPAChart
     bottomLabel?: string
 }
@@ -25,7 +25,7 @@ const IPATable = ({ topLabel, IPAData, bottomLabel }: IPATableProps) => {
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
-                        <span className="text-sm">{topLabel}</span>
+                        <span className="text-sm">{topLabel || "\u00A0"}</span>
                         <table
                             className="min-w-full border border-neutral-200 bg-gray-700 text-center text-sm font-light text-surface text-white">
                             <thead

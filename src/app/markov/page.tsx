@@ -1,6 +1,6 @@
 'use client'
 
-import PDFForm from "@/components/PDFForm"
+import FileForm from "@/components/FileForm"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { FixedSizeGrid as Grid } from 'react-window'
 
@@ -116,7 +116,7 @@ export default function Markov() {
         <div className="flex w-full h-full justify-center mt-5">
             {tokens.length <= 0
                 ?
-                <PDFForm updateStates={updateStates} route="/markov" />
+                <FileForm updateStates={updateStates} route="/markov" />
                 :
                 <div className="flex w-full max-w-100 space-x-4 justify-between">
                     <div className="relative w-2/3 p-2 bg-gray-700 rounded-lg overflow-y-auto border border-gray-600">

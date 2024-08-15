@@ -1,14 +1,17 @@
-import { NextResponse } from 'next/server'
-import getPDFText from '@/utils/pdf'
+import path from 'path'
 import wordFrequency from '@/utils/_frequency'
+import { NextRequest } from 'next/server'
+import fileSys from '@/utils/fileSys'
 
-export async function POST(request: Request) {
-    return new Promise(async (resolve) => {
+export async function POST(request: NextRequest) {
+    try {
         const formData = await request.formData()
         const file = formData.get('file') as File
-        const text = await getPDFText(file)
+        const text = await fileSys.getFileText(file)
         const freq = wordFrequency(text)
 
-        resolve(NextResponse.json({ freq, raw: text }))
-    })
+        return new Response(JSON.stringify({ text, freq }), { status: 200 })
+    } catch (error: any) {
+        return new Response(null, { status: 400, statusText: error })
+    }
 }

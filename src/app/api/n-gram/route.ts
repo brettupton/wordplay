@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import countNGrams from '@/utils/_n-gram'
 import getPDFText from '@/utils/pdf'
-import { readDir, delDir } from '@/utils/filesys'
+import { readDir, delDir } from '@/utils/fileSys'
 
 export async function POST(request: Request) {
     return new Promise(async (resolve) => {

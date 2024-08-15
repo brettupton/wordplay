@@ -1,6 +1,4 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
-import fs from 'fs'
-import path from 'path'
 
 export default async function getPDFText(file: File): Promise<string> {
     GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.mjs'
