@@ -1,26 +1,23 @@
 import Tokenizer from "./_tokenizer"
 
-const countNGrams = (text: string, n: number) => {
+const nGramCount = (text: string, n: number) => {
     const tokenizer = new Tokenizer(text)
-    const words = tokenizer.punctTokens()
-    const count: { [index: string]: { count: number, nGram: string[] } } = {}
+    const words = tokenizer.wordTokens()
+    const nGrams: { [nGram: string]: number } = {}
 
     for (let i = 0; i < (words.length - n); i++) {
         const nGram = words.slice(i, i + n)
         const curr = JSON.stringify(nGram).toLowerCase()
 
-        if (count[curr]) {
-            count[curr].count++
+        if (!nGrams[curr]) {
+            nGrams[curr] = 1
         } else {
-            count[curr] = {
-                count: 1,
-                nGram: nGram
-            }
+            nGrams[curr]++
         }
     }
 
-    return count
+    return Object.entries(nGrams)
 }
 
 
-export default countNGrams 
+export default nGramCount 

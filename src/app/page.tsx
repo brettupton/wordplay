@@ -11,10 +11,10 @@ export default function Home() {
                     <LinkButton href="frequency" text="Frequency" />
                 </div>
                 <div className="flex">
-                    <LinkButton href="phonetic" text="Phonetic" />
+                    <LinkButton href="phonetic" text="Phonetics" />
                 </div>
             </div>
-            <div className="flex">
+            <div className="flex m-5">
                 <Image
                     src={WordPlayLogo}
                     height={200}
@@ -23,10 +23,10 @@ export default function Home() {
             </div>
             <div className="flex w-1/2 justify-around text-2xl">
                 <div className="flex">
-                    <LinkButton href="n-gram" text="N-Gram" />
+                    <LinkButton href="nlp" text="NLP" />
                 </div>
                 <div className="flex">
-                    <LinkButton href="markov" text="Markov" />
+
                 </div>
             </div>
         </div>

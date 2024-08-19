@@ -1,34 +1,32 @@
-import { NextResponse } from 'next/server'
-import fs from 'fs'
+import { NextRequest } from 'next/server'
 import path from 'path'
-import countNGrams from '@/utils/_n-gram'
-import getPDFText from '@/utils/pdf'
-import { readDir, delDir } from '@/utils/fileSys'
+import nGramCount from '@/utils/_n-gram'
+import fileSys from '@/utils/fileSys'
 
-export async function POST(request: Request) {
-    return new Promise(async (resolve) => {
+export async function GET(request: NextRequest) {
+    try {
+        const searchParams = request.nextUrl.searchParams
+        const n = Number(searchParams.get('n'))
+
+        const text = await fileSys.readDir(path.join(process.cwd(), 'public', 'uploads'))
+        const nGrams = nGramCount(text, n)
+
+        return new Response(JSON.stringify(nGrams), { status: 200 })
+    } catch (error: any) {
+        return new Response(null, { status: 200, statusText: error })
+    }
+}
+
+export async function POST(request: NextRequest) {
+    try {
         const formData = await request.formData()
         const file = formData.get('file') as File
-        const nChoice = Number(formData.get('n'))
-        const uploadPath = path.join(process.cwd(), 'public', 'uploads')
+        const text = await fileSys.getFileText(file)
+        const nGrams = nGramCount(text, 2)
 
-        if (file) {
-            const text = await getPDFText(file)
+        return new Response(JSON.stringify({ text, nGrams }), { status: 200 })
 
-            await delDir(uploadPath)
-            fs.writeFile(path.join(uploadPath, `${file.name.split(".")[0]}.txt`), text, 'utf-8', (err) => {
-                if (err) {
-                    resolve(NextResponse.error())
-                }
-            })
-
-            const nGrams = countNGrams(text, 2)
-
-            resolve(NextResponse.json({ nGrams, raw: text }))
-        } else {
-            const text = await readDir(uploadPath)
-            const nGrams = countNGrams(text, nChoice)
-            resolve(NextResponse.json({ nGrams }))
-        }
-    })
+    } catch (error: any) {
+        return new Response(null, { status: 400, statusText: error })
+    }
 }

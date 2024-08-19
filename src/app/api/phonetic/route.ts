@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { NextResponse, type NextRequest } from 'next/server'
 import getPDFText from '@/utils/pdf'
-import { delDir } from '@/utils/fileSys'
+import fileSys from '@/utils/fileSys'
 import { addPhonetic, getPhonetic, getPhonetics } from '@/utils/db'
 import Tokenizer from '@/utils/_tokenizer'
 
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
                 return arr.concat(v, phoneticText.split("\n")[i])
             }, [])
 
-            await delDir(uploadPath)
+            await fileSys.delDir(uploadPath)
             fs.writeFile(path.join(uploadPath, `${file.name.split(".")[0]}.txt`), text, 'utf-8', (err) => {
                 if (err) {
                     resolve(NextResponse.error())
