@@ -23,8 +23,8 @@ const readDir = (dirPath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         if (fs.existsSync(dirPath)) {
             fs.readdir(dirPath, (err, files) => {
-                if (files.length > 1) {
-                    reject("Directory contains more than one file")
+                if (files.length <= 0 || files.length > 1) {
+                    reject("Directory contains zero files or more than one file")
                 }
                 fs.readFile(path.join(dirPath, files[0]), (err, data) => {
                     if (err) {

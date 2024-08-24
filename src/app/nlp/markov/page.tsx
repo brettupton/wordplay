@@ -1,53 +1,16 @@
 'use client'
 
-import { FileForm, TextArea } from '@/components'
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { FixedSizeGrid as Grid } from 'react-window'
+import { ActionButton, FileForm, TextArea, Spinner } from '@/components'
+import { ChangeEvent, useState } from "react"
 
-interface WindowSize {
-    width: number
-    height: number
-}
 
 export default function Markov() {
     const [tokens, setTokens] = useState<string[]>([])
-    const [text, setText] = useState<string>("")
     const [chain, setChain] = useState<string>("")
     const [selectedWords, setSelectedWords] = useState<string[]>([])
-    const [chainLength, setChainLength] = useState<number>(20)
-    const [sentence, setSentence] = useState<string>("")
+    const [isSubArray, setIsSubArray] = useState<boolean>(false)
+    const [chainLength, setChainLength] = useState<number>(15)
     const [isChainLoading, setIsChainLoading] = useState<boolean>(false)
-    const [windowSize, setWindowSize] = useState<WindowSize>(
-        {
-            width: 0,
-            height: 0
-        })
-    const [columnCount, setColumnCount] = useState<number>(8)
-
-    useEffect(() => {
-        const handleWindowResize = () => {
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight
-            })
-        }
-        handleWindowResize()
-        window.addEventListener('resize', handleWindowResize)
-        return () => {
-            window.removeEventListener('resize', handleWindowResize)
-        }
-    }, [])
-
-    const handleWordChange = (word: string) => {
-        if (selectedWords.length === 0) {
-            setSelectedWords([word])
-        } else {
-            const checkArr = [...selectedWords, word]
-            if (isSubArr(tokens, checkArr)) {
-                setSelectedWords(checkArr)
-            }
-        }
-    }
 
     const handleLengthChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.currentTarget
@@ -55,45 +18,49 @@ export default function Markov() {
         setChainLength(Number(value))
     }
 
-    const handleWordReset = () => {
-        setSelectedWords([])
-        setSentence("")
+    const handlePrefixChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.currentTarget
+
+        if (isSubArr(tokens, value.split(","))) {
+            setIsSubArray(true)
+        } else {
+            setIsSubArray(false)
+        }
+        setSelectedWords(value.split(","))
     }
 
-    const updateStates = (result: any) => {
-        setText(result.text)
-        setChain(result.chain)
+    const updateStates = (result: APIResult) => {
+        setTokens(result.tokens as string[])
+        setChain(result.chain as string)
+        setSelectedWords(result.examplePrefix as string[])
     }
 
-    const handleChainSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (selectedWords.length <= 0) return
-
-        setIsChainLoading(true)
-
-        const formData = new FormData()
-        formData.append('selected', JSON.stringify(selectedWords))
-        formData.append('chainLength', chainLength.toString())
+    const handleChainSubmit = async () => {
+        if (!isSubArray) return
 
         try {
-            const response = await fetch('/api/markov', {
-                method: 'POST',
-                body: formData
-            })
-            const result = await response.json()
-            setSentence(result.chain)
-            setIsChainLoading(false)
+            setIsChainLoading(true)
+            const response = await fetch(`/api/markov?chainLength=${chainLength}&prefix=${selectedWords}`, { method: "GET" })
+
+            if (response.ok) {
+                const result: APIResult = await response.json()
+
+                setChain(result.chain as string)
+                setIsChainLoading(false)
+            } else {
+                throw new Error(response.statusText)
+            }
         } catch (error) {
-            console.error('Error creating chain:', error)
+            setIsChainLoading(false)
+            console.error(error)
         }
     }
 
     const handleRefresh = () => {
+        setChain("")
         setTokens([])
         setSelectedWords([])
-        setChainLength(5)
-        setSentence("")
+        setChainLength(15)
         setIsChainLoading(false)
     }
 
@@ -117,16 +84,47 @@ export default function Markov() {
 
     return (
         <div className="flex w-full h-full justify-center mt-5">
-            {text.length <= 0
+            {tokens.length <= 0
                 ?
                 <FileForm updateStates={updateStates} route="markov" />
                 :
                 <div className="flex w-full max-w-100 space-x-4 justify-between">
                     <div className="flex-1">
-                        <TextArea text={text.split("\n")} />
+                        <TextArea text={tokens} variant="markov" />
                     </div>
-                    <div className="flex-1 border border-white rounded">
-                        {chain}
+                    <div className="flex-1">
+                        <div className="relative border-2 border-white p-5 m-5 w-72 h-15">
+                            <div className="absolute -top-3 left-3 bg-black px-1 text-sm">
+                                Prefix
+                            </div>
+                            <div className="content">
+                                <input type="text"
+                                    className={`bg-transparent p-1 rounded border ${isSubArray ? 'border-green-500 focus:outline-none focus:ring-0 focus:border-green-500"' : 'border-red-500 focus:outline-none focus:ring-0 focus:border-red-500'}`}
+                                    defaultValue={selectedWords} onChange={handlePrefixChange} />
+                            </div>
+                        </div>
+                        <div className="relative border-2 border-white p-5 m-5 w-72 h-48">
+                            <div className="absolute -top-3 left-3 bg-black px-1 text-sm">
+                                Chain
+                            </div>
+                            <div className="content">
+                                {isChainLoading ?
+                                    <Spinner />
+                                    :
+                                    chain
+                                }
+                            </div>
+                        </div>
+                        <div className="flex">
+                            <div className="relative w-1/4">
+                                <label htmlFor="length" className="block mb-2 text-sm font-medium text-white">Length = {chainLength}</label>
+                                <input id="length" type="range" min="10" max="30" onChange={handleLengthChange} defaultValue={chainLength} step="1" className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer" />
+                            </div>
+                            <ActionButton action={handleChainSubmit} text="Generate" />
+                        </div>
+                        <div className="flex justify-start">
+                            <ActionButton action={handleRefresh} text="Refresh" />
+                        </div>
                     </div>
                 </div>
             }

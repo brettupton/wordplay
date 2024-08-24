@@ -2,7 +2,6 @@
 
 import { Gentium_Plus } from "next/font/google"
 import { useState, useRef } from "react"
-import { IPASounds } from "@/utils/info/IPACharts"
 
 interface IPATableProps {
     topLabel?: string

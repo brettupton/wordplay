@@ -11,3 +11,7 @@ type WindowSize = {
     width: number
     height: number
 }
+
+type APIResult = {
+    [key: string]: string | string[]
+}

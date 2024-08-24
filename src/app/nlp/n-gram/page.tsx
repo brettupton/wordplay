@@ -23,7 +23,7 @@ export default function NGram() {
         setUpdateLoading(true)
 
         try {
-            const response = await fetch(`/api/n-gram?n=${n}`)
+            const response = await fetch(`/api/n-gram?n=${n}`, { method: "GET" })
 
             if (!response.ok) {
                 throw response.statusText
@@ -60,7 +60,7 @@ export default function NGram() {
                                 }
                             </div>
                             <div className="flex-1">
-                                <TextArea text={text.split("\n")} />
+                                <TextArea text={text.split("\n")} variant="none" />
                             </div>
                         </div>
                         <div className="flex">

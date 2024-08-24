@@ -32,9 +32,9 @@ export default function ReadPhonetic() {
                 <div className="flex flex-col">
                     <div className="flex">
                         {showMerged ?
-                            <TextArea text={merged} alternate={showMerged} />
+                            <TextArea text={merged} variant={showMerged ? "alternate" : "none"} />
                             :
-                            <TextArea text={phonetics.split("\n")} />
+                            <TextArea text={phonetics.split("\n")} variant="none" />
                         }
                     </div>
                     <div className="flex mt-1">

@@ -36,7 +36,7 @@ export default function FileForm({ updateStates, route }: FileFormProps) {
                 body: formData,
             })
             if (response.ok) {
-                const result = await response.json()
+                const result: APIResult = await response.json()
                 updateStates(result)
                 setIsLoading(false)
             } else {
