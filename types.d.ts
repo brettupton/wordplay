@@ -15,3 +15,13 @@ type WindowSize = {
 type APIResult = {
     [key: string]: string | string[]
 }
+
+type BinaryNode = {
+    tier: number
+    element: string | number
+    connections: number[]
+    topPointX?: number
+    topPointY?: number
+    bottomPointX?: number
+    bottomPointY?: number
+}
