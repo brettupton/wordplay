@@ -1,14 +1,14 @@
 'use client'
 
-import ActionButton from "@/components/ActionButton"
-import IPATables from "@/components/IPATables"
-import Spinner from "@/components/Spinner"
-import { useState, ChangeEvent } from 'react'
+import { ActionButton, IPATables, Spinner } from "@/components"
+import SyllableTree from "@/components/SyllableTree"
 import speakWord from "@/utils/speak"
+import { ChangeEvent, useState } from 'react'
 
 export default function LearnPhonetic() {
     const [queryWord, setQueryWord] = useState<string>("")
     const [queryWordPhonetic, setQueryWordPhonetic] = useState<string | undefined>()
+    const [queryWordSyllables, setQueryWordSyllables] = useState()
     const [queryLoading, setQueryLoading] = useState<boolean>(false)
     const [newPhonetic, setNewPhonetic] = useState<string>("")
     const [newLoading, setNewLoading] = useState<boolean>(false)
@@ -32,7 +32,8 @@ export default function LearnPhonetic() {
                 }
                 const result = await response.json()
 
-                setQueryWordPhonetic(result.phonetic)
+                setQueryWordPhonetic(result.phonetic.phonetic)
+                setQueryWordSyllables(result.syllables)
                 setQueryLoading(false)
             } catch (error) {
                 console.error('Something went wrong\n', error)
@@ -80,7 +81,7 @@ export default function LearnPhonetic() {
     }
 
     return (
-        <div className="flex flex-col w-full h-full justify-center overflow-y-scroll">
+        <div className="flex flex-col w-full h-full justify-center">
             <div className="flex h-1/4 justify-center pt-5 justify-center gap-10">
                 <div className="flex">
                     <div className="flex flex-col">
@@ -114,19 +115,24 @@ export default function LearnPhonetic() {
                                 <input type="text" id="new" value={newPhonetic} onChange={handlePhoneticChange}
                                     className="block w-full p-2 border rounded-lg text-sm focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white" />
                             </div>
-                            <div className="flex">
+                            {/* <div className="flex">
                                 {newLoading ?
                                     <Spinner />
                                     :
                                     <ActionButton action={addPhonetic} text="Add" />
                                 }
-                            </div>
+                            </div> */}
                         </div>
                     }
                 </div>
             </div>
-            <div className="flex h-3/4 w-full">
-                <IPATables />
+            <div className="flex h-3/4 w-full justify-center">
+                {/* <IPATables /> */}
+                {queryWordPhonetic && queryWordSyllables ?
+                    <SyllableTree phonetic={queryWordPhonetic} syllables={queryWordSyllables} />
+                    :
+                    <div></div>
+                }
             </div>
         </div>
     )

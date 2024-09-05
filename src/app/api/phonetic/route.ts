@@ -5,6 +5,7 @@ import getPDFText from '@/utils/pdf'
 import fileSys from '@/utils/fileSys'
 import { addPhonetic, getPhonetic, getPhonetics } from '@/utils/db'
 import Tokenizer from '@/utils/_tokenizer'
+import splitSyllables from '@/utils/syllables'
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
@@ -12,9 +13,10 @@ export async function GET(request: NextRequest) {
 
     if (query) {
         try {
-            const result = await getPhonetic(query)
+            const phonetic = await getPhonetic(query)
+            const syllables = splitSyllables(phonetic.phonetic)
 
-            return new Response(JSON.stringify(result), { status: 200 })
+            return new Response(JSON.stringify({ phonetic, syllables }), { status: 200 })
         } catch (err: any) {
             return new Response(err, { status: 400 })
         }
