@@ -1,3 +1,5 @@
+// Will eventually use this I'm sure, more of a 'can I do this' kind of thing
+
 'use client'
 
 import { useEffect, useState } from "react"
@@ -113,8 +115,8 @@ export default function BinaryTree({ array }: BinaryTreeProps) {
             connections.forEach(connection => {
                 const connectionNode = binaryNodes[connection]
 
-                if (connectionNode && currNode.bottomPointX && currNode.bottomPointY && connectionNode.topPointX && connectionNode.topPointY) {
-                    Draw.createLine(document, currNode.bottomPointX, currNode.bottomPointY, connectionNode.topPointX, connectionNode.topPointY)
+                if (connectionNode && currNode && connectionNode) {
+                    // Draw.createLineBetween(document, currNode, connectionNode)
                 }
             })
         }

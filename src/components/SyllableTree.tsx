@@ -14,13 +14,13 @@ export default function SyllableTree({ phonetic, syllables }: SyllableTreeProps)
             {syllables.map((syllable, index) => {
                 return (
                     <div key={index} className="flex mt-3">
-                        <div className="flex" style={{ width: "114px" }}>
+                        <div className="flex w-28">
                             <TextOutline title="Onset" content={syllable.onset} />
                         </div>
-                        <div className="flex" style={{ width: "114px" }}>
+                        <div className="flex w-28">
                             <TextOutline title="Nucleus" content={syllable.nucleus} />
                         </div>
-                        <div className="flex" style={{ width: "114px" }}>
+                        <div className="flex w-28">
                             <TextOutline title="Coda" content={syllable.coda} />
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-// TODO: Configure for open/closed syllables
+// TODO: Rework entire function.. this works for hacky sort of count but doesn't present true syllable breaks (eg. computer is split incorrectly)
 
 const isVowel = (char: string) => {
     return (/[ɑæəɔaʊaɪɛɚeɪɪioɝʊʌɔɪʊu]/gm).test(char)
