@@ -1,8 +1,7 @@
-import Tokenizer from "./_tokenizer"
+import { tokenizer } from "./tokenizer"
 
 const nGramCount = (text: string, n: number) => {
-    const tokenizer = new Tokenizer(text)
-    const words = tokenizer.wordTokens()
+    const words = tokenizer.wordTokens(text)
     const nGrams: { [nGram: string]: number } = {}
 
     for (let i = 0; i < (words.length - n); i++) {

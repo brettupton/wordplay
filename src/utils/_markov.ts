@@ -1,6 +1,6 @@
 // https://rosettacode.org/wiki/Markov_chain_text_generator#
 
-import Tokenizer from "./_tokenizer"
+import { tokenizer } from "./tokenizer"
 
 const createPrefixes = async (tokens: string[], n: number) => {
     const prefixesMap = new Map<string, { prefix: string[], suffixes: string[] }>()
@@ -26,8 +26,7 @@ const createPrefixes = async (tokens: string[], n: number) => {
 }
 
 const createChain = async (text: string, initPrefix: string[], chainLength: number) => {
-    const tokenizer = new Tokenizer(text)
-    const tokens = tokenizer.punctTokens()
+    const tokens = tokenizer.punctTokens(text)
 
     const prefixesMap = await createPrefixes(tokens, initPrefix.length)
     let sentence = initPrefix.join(" ")

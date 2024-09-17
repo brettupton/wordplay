@@ -3,9 +3,11 @@ import fs from 'fs'
 import { NextResponse, type NextRequest } from 'next/server'
 import getPDFText from '@/utils/pdf'
 import fileSys from '@/utils/fileSys'
-import { addPhonetic, getPhonetic, getPhonetics } from '@/utils/db'
-import Tokenizer from '@/utils/_tokenizer'
+import sqlDB from '@/utils/sqlDB'
+import { tokenizer } from '@/utils/tokenizer'
 import splitSyllables from '@/utils/syllables'
+
+const cmuDB = new sqlDB('cmu')
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
@@ -13,10 +15,10 @@ export async function GET(request: NextRequest) {
 
     if (query) {
         try {
-            const phonetic = await getPhonetic(query)
-            const syllables = splitSyllables(phonetic.phonetic)
+            const queryResult = await cmuDB.queryOne(query)
+            const syllables = splitSyllables(queryResult)
 
-            return new Response(JSON.stringify({ phonetic, syllables }), { status: 200 })
+            return new Response(JSON.stringify({ queryResult, syllables }), { status: 200 })
         } catch (err: any) {
             return new Response(err, { status: 400 })
         }
@@ -25,18 +27,18 @@ export async function GET(request: NextRequest) {
     return new Response('No request query', { status: 400 })
 }
 
-export async function PUT(request: NextRequest) {
-    const res = await request.json()
-    const { word, phonetic } = res
+// export async function PUT(request: NextRequest) {
+//     const res = await request.json()
+//     const { word, phonetic } = res
 
-    try {
-        await addPhonetic(word.toUpperCase(), phonetic)
+//     try {
+//         await addPhonetic(word.toUpperCase(), phonetic)
 
-        return new Response('', { status: 201 })
-    } catch (err: any) {
-        return new Response(err, { status: 200 })
-    }
-}
+//         return new Response('', { status: 201 })
+//     } catch (err: any) {
+//         return new Response(err, { status: 200 })
+//     }
+// }
 
 export async function POST(request: Request) {
     return new Promise(async (resolve) => {
@@ -47,12 +49,11 @@ export async function POST(request: Request) {
         try {
             const text = await getPDFText(file)
             let phoneticText = text
-            const tokenizer = new Tokenizer(text)
             const uniqueWordTokens = tokenizer.wordTokens('unique')
-            const phonetics = await getPhonetics(uniqueWordTokens)
+            const phonetics = await cmuDB.queryMany(uniqueWordTokens)
 
             phonetics.forEach(ipa => {
-                const { word, phonetic } = ipa
+                const [word, phonetic] = ipa
                 phoneticText = phoneticText.replace(new RegExp(`\\b${word}\\b`, 'g'), phonetic)
             })
 

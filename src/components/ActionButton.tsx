@@ -3,13 +3,13 @@ import { useEffect } from "react"
 interface ActionButtonProps {
     action: () => void | Promise<void>
     text: string
-    actionOnEnter?: boolean
+    onEnter?: boolean
 }
 
-export default function ActionButton({ action, text, actionOnEnter }: ActionButtonProps) {
+export default function ActionButton({ action, text, onEnter }: ActionButtonProps) {
     useEffect(() => {
         const clickAction = (e: KeyboardEvent) => {
-            if (actionOnEnter && e.key === "Enter") {
+            if (onEnter && e.key === "Enter") {
                 e.preventDefault()
                 document.getElementById(`${text}-button`)?.click()
             }
@@ -19,7 +19,7 @@ export default function ActionButton({ action, text, actionOnEnter }: ActionButt
         return () => {
             window.removeEventListener('keydown', clickAction)
         }
-    }, [actionOnEnter, text])
+    }, [onEnter, text])
 
     return (
         <div className="flex justify-center mt-3">

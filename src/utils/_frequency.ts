@@ -1,13 +1,12 @@
 import stopWords from "./info/stopwords"
-import Tokenizer from "./_tokenizer"
+import { tokenizer } from "./tokenizer"
 
 interface frequency {
   [word: string]: number
 }
 
 const wordFrequency = (text: string, keepStopWords?: boolean, keepCasing?: boolean) => {
-  const tokenizer = new Tokenizer(text)
-  const words = tokenizer.wordTokens()
+  const words = tokenizer.wordTokens(text)
   const freq: frequency = {}
 
   words.forEach(word => {

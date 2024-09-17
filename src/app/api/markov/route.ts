@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import path from 'path'
 import fileSys from '@/utils/fileSys'
 import { createChain } from '@/utils/_markov'
-import Tokenizer from '@/utils/_tokenizer'
+import { tokenizer } from '@/utils/tokenizer'
 
 export async function GET(request: NextRequest) {
     try {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         const file = formData.get('file') as File
 
         const text = await fileSys.getFileText(file)
-        const tokens = new Tokenizer(text).punctTokens()
+        const tokens = tokenizer.punctTokens(text)
 
         const exampleStart = Math.floor(Math.random() * tokens.length)
         const examplePrefix = tokens.slice(exampleStart, exampleStart + 3)
