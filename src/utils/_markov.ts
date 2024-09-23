@@ -1,6 +1,6 @@
 // https://rosettacode.org/wiki/Markov_chain_text_generator#
 
-import { tokenizer } from "./tokenizer"
+import tokenizer from "./tokenizer"
 
 const createPrefixes = async (tokens: string[], n: number) => {
     const prefixesMap = new Map<string, { prefix: string[], suffixes: string[] }>()
@@ -42,7 +42,7 @@ const createChain = async (text: string, initPrefix: string[], chainLength: numb
     return sentence.replace(/\s(?=[^a-zA-Z])/gm, "")
 }
 
-export { createChain }
+export default createChain
 
 // https://www.kdnuggets.com/2019/11/markov-chains-train-text-generation.html
 // import * as math from 'mathjs'

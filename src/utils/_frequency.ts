@@ -1,5 +1,5 @@
 import stopWords from "./info/stopwords"
-import { tokenizer } from "./tokenizer"
+import tokenizer from "./tokenizer"
 
 interface frequency {
   [word: string]: number

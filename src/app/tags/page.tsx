@@ -1,9 +1,9 @@
 'use client'
 
-import { ActionButton } from "@/components"
+import { ActionButton, LinkButton } from "@/components"
 import { ChangeEvent, useState } from "react"
 
-export default function Speech() {
+export default function Tags() {
     const [sentence, setSentence] = useState<string>("")
     const [tokens, setTokens] = useState<string[]>([])
 
@@ -15,7 +15,7 @@ export default function Speech() {
     const handleSentenceSubmit = async () => {
         if (sentence) {
             try {
-                const response = await fetch('/api/speech', {
+                const response = await fetch('/api/tags', {
                     method: "POST",
                     body: JSON.stringify(sentence)
                 })
@@ -32,16 +32,21 @@ export default function Speech() {
     }
 
     return (
-        <div className="flex flex-col w-full h-full mt-5 items-center">
-            <div className="flex text-black">
-                <input type="text" onChange={handleSentenceChange} />
+        <>
+            <div className="flex flex-col w-full h-full mt-5 items-center">
+                <div className="flex text-black">
+                    <input type="text" onChange={handleSentenceChange} />
+                </div>
+                <div className="flex">
+                    {sentence}
+                </div>
+                <div className="flex">
+                    <ActionButton text="Submit" action={handleSentenceSubmit} onEnter={true} />
+                </div>
             </div>
-            <div className="flex">
-                {sentence}
+            <div className="flex w-full">
+                <LinkButton text="Brown Dictionary" href="tags/brown" />
             </div>
-            <div className="flex">
-                <ActionButton text="Submit" action={handleSentenceSubmit} onEnter={true} />
-            </div>
-        </div>
+        </>
     )
 }

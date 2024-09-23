@@ -25,3 +25,11 @@ type BinaryNode = {
     bottomPointX?: number
     bottomPointY?: number
 }
+
+type BrownDict = [
+    string,
+    {
+        COUNT: number
+        [pos: string]: number
+    }
+][]

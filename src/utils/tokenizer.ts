@@ -35,4 +35,6 @@ const sentenceTokens = (text: string) => {
     return tokens
 }
 
-export const tokenizer = { punctTokens, wordTokens, sentenceTokens }
+const tokenizer = { punctTokens, wordTokens, sentenceTokens }
+
+export default tokenizer

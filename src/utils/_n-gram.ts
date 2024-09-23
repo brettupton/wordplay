@@ -1,4 +1,4 @@
-import { tokenizer } from "./tokenizer"
+import tokenizer from "./tokenizer"
 
 const nGramCount = (text: string, n: number) => {
     const words = tokenizer.wordTokens(text)

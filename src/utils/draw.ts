@@ -74,4 +74,6 @@ const createLineBetween = (document: Document, e1: HTMLElement, e2: HTMLElement,
     document.body.appendChild(line)
 }
 
-export const Draw = { createPoint, createLineBetween }
+const Draw = { createPoint, createLineBetween }
+
+export default Draw

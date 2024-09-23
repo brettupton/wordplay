@@ -2,12 +2,12 @@
 
 import Image from 'next/image'
 import { useEffect, useMemo } from 'react'
-import { Draw } from '@/utils/draw'
+import { Draw } from '@/utils'
 import Link from 'next/link'
 
 export default function Home() {
     const routes = useMemo(() => {
-        return ['frequency', 'markov', 'n-gram', 'phonetics', 'speech']
+        return ['frequency', 'markov', 'n-gram', 'phonetics', 'tags']
     }, [])
 
     // TODO: Math.random() creates hydration warning between server and client.. need to only get random value on client render
