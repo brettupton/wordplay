@@ -9,7 +9,6 @@ const punctTokens = (text: string) => {
     return tokens
 }
 
-
 const wordTokens = (text: string, type?: string) => {
     const pageNums = text.replace(/(?:\\n+\d+)/gm, '')
     const markup = pageNums.replace(/(?:\\+[a-z])/gm, ' ')
@@ -35,6 +34,16 @@ const sentenceTokens = (text: string) => {
     return tokens
 }
 
-const tokenizer = { punctTokens, wordTokens, sentenceTokens }
+const spaceTokens = (text: string) => {
+    const pageNums = text.replace(/(?:\\n+\d+)/gm, '')
+    const markup = pageNums.replace(/(?:\\+[a-z])/gm, ' ')
+    const hyphens = markup.replace(/\-{2,}/gm, '')
+    const double = hyphens.replace(/\s{2,}/g, ' ')
+    const tokens = double.split(" ").filter(token => token !== "")
+
+    return tokens
+}
+
+const tokenizer = { punctTokens, wordTokens, sentenceTokens, spaceTokens }
 
 export default tokenizer

@@ -1,52 +1,77 @@
 'use client'
 
-import { ActionButton, LinkButton } from "@/components"
-import { ChangeEvent, useState } from "react"
+import { ActionButton, FileForm, LinkButton, TextArea } from "@/components"
+import { useState } from "react"
 
 export default function Tags() {
-    const [sentence, setSentence] = useState<string>("")
-    const [tokens, setTokens] = useState<string[]>([])
+    const [tags, setTags] = useState<string[][]>([])
 
-    const handleSentenceChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.currentTarget
-        setSentence(value)
+    const updateStates = (result: any) => {
+        const alternatedTags = alternateTags(result.tags)
+
+        setTags([...alternatedTags])
     }
 
-    const handleSentenceSubmit = async () => {
-        if (sentence) {
-            try {
-                const response = await fetch('/api/tags', {
-                    method: "POST",
-                    body: JSON.stringify(sentence)
-                })
-                if (response.ok) {
-                    const result: APIResult = await response.json()
-                    if (result.tokens) {
-                        setTokens(result.tokens as string[])
-                    }
-                }
-            } catch (error) {
-                console.error(error)
-            }
+    const handleRefresh = () => {
+        setTags([])
+    }
+
+    const alternateTags = (tags: POSTuple[]): string[][] => {
+        const alternated: string[][] = []
+
+        while (tags.length > 0) {
+            const wordArr: string[] = []
+            const tagArr: string[] = []
+            const perIndex = tags.findIndex(([word]) => word.includes("."))
+
+            if (perIndex === -1) break
+
+            const sentence = tags.slice(0, perIndex + 1)
+            sentence.forEach((token) => {
+
+                wordArr.push(token[0], " ")
+                tagArr.push(token[1], " ")
+            })
+
+            alternated.push(wordArr, tagArr)
+
+            tags = tags.slice(perIndex + 1)
         }
+
+        if (tags.length > 0) {
+            const wordArr: string[] = []
+            const tagArr: string[] = []
+            tags.forEach((token) => {
+                wordArr.push(token[0], " ")
+                tagArr.push(token[1], " ")
+            })
+
+            alternated.push(wordArr, tagArr)
+        }
+
+        return alternated
     }
 
     return (
-        <>
-            <div className="flex flex-col w-full h-full mt-5 items-center">
-                <div className="flex text-black">
-                    <input type="text" onChange={handleSentenceChange} />
+        <div className="flex flex-col justify-between w-full h-full mt-5">
+            {tags.length <= 0 ?
+                <div className="flex justify-center">
+                    <FileForm updateStates={updateStates} route="tags" />
                 </div>
-                <div className="flex">
-                    {sentence}
+                :
+                <div className="flex flex-col w-1/2">
+                    <div className="flex">
+                        <TextArea text={tags} options={{ type: "alternate" }} />
+                    </div>
+                    <div className="flex justify-center">
+                        {/* <ActionButton action={handleRefresh} text="Refresh" /> */}
+                        <button onClick={handleRefresh}>Refresh</button>
+                    </div>
                 </div>
-                <div className="flex">
-                    <ActionButton text="Submit" action={handleSentenceSubmit} onEnter={true} />
-                </div>
+            }
+            <div className="flex justify-end -mt-12">
+                <LinkButton text="Brown Corpus" href="tags/brown" />
             </div>
-            <div className="flex w-full">
-                <LinkButton text="Brown Dictionary" href="tags/brown" />
-            </div>
-        </>
+        </div>
     )
 }

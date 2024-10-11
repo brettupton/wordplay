@@ -40,6 +40,25 @@ const readDir = (dirPath: string): Promise<string> => {
     })
 }
 
+const readFileInDir = (dirPath: string, fileName: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        try {
+            if (fs.existsSync(dirPath)) {
+                fs.readFile(path.join(dirPath, fileName), (err, data) => {
+                    if (err) {
+                        throw new Error("Error reading file")
+                    }
+                    resolve(data.toString())
+                })
+            } else {
+                throw new Error("Directory does not exist")
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 const replaceFile = (dirPath: string, fileName: string, data: string): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -84,6 +103,7 @@ const getFileText = (file: File): Promise<string> => {
 
 const fileSys = {
     readDir,
+    readFileInDir,
     delDir,
     replaceFile,
     getFileText

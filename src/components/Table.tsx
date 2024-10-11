@@ -1,3 +1,5 @@
+'use client'
+
 import { FixedSizeGrid as Grid } from 'react-window'
 import { useState, useEffect } from 'react'
 

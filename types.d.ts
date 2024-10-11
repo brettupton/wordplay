@@ -33,3 +33,9 @@ type BrownDict = [
         [pos: string]: number
     }
 ][]
+
+type POSTuple = [
+    word: string,
+    maxTag: string,
+    numChanges: number
+]

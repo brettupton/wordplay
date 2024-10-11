@@ -1,8 +1,6 @@
 import { NextRequest } from 'next/server'
 import path from 'path'
-import fileSys from '@/utils/fileSys'
-import { createChain } from '@/utils/_markov'
-import { tokenizer } from '@/utils/tokenizer'
+import { fileSys, _markov, tokenizer } from '@/utils'
 
 export async function GET(request: NextRequest) {
     try {
@@ -11,7 +9,7 @@ export async function GET(request: NextRequest) {
         const prefix = searchParams.get('prefix')
 
         const text = await fileSys.readDir(path.join(process.cwd(), 'public', 'uploads'))
-        const chain = await createChain(text, prefix!.split(","), chainLength)
+        const chain = await _markov(text, prefix!.split(","), chainLength)
 
         return new Response(JSON.stringify({ chain }), { status: 200 })
     } catch (error: any) {
@@ -30,7 +28,7 @@ export async function POST(request: NextRequest) {
         const exampleStart = Math.floor(Math.random() * tokens.length)
         const examplePrefix = tokens.slice(exampleStart, exampleStart + 3)
 
-        const chain = await createChain(text, examplePrefix, 20)
+        const chain = await _markov(text, examplePrefix, 20)
 
         return new Response(JSON.stringify({ tokens, chain, examplePrefix }), { status: 200 })
     } catch (error: any) {

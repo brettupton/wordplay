@@ -42,20 +42,22 @@ export default class sqlDB {
                     resolve(results)
                 }
 
-                let word = words[index]
+                const word = words[index]
 
                 if (word) {
-                    word = word.trim()
+                    // Remove all punctuation from word first
+                    let searchWord = word.trim().replace(/[^\w\s]/gm, "")
                     if (this.dbType === 'cmu') {
-                        word = word.toUpperCase().trim()
+                        searchWord = searchWord.toUpperCase()
                     }
 
-                    this.db.get(`SELECT ${this.column} FROM ${this.dbType}dict WHERE word=?`, [word], (err, row: any) => {
+                    this.db.get(`SELECT ${this.column} FROM ${this.dbType}dict WHERE word=?`, [searchWord], (err, row: any) => {
                         if (err) {
                             reject(err)
                             index++
                             return
                         }
+                        // POS tags are stored as JSON string, phonetics are normal strings
                         const result: string = row ? row.phonetic ?? JSON.parse(row.pos) : ""
                         results.push([word, result])
                         index++

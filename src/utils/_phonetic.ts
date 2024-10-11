@@ -66,4 +66,8 @@ const splitSyllables = (phonetic: string) => {
     return syllables
 }
 
-export default splitSyllables
+const phonetics = {
+    splitSyllables
+}
+
+export default phonetics

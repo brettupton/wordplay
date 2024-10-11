@@ -61,7 +61,7 @@ export default function Frequency() {
                                 }
                             </div>
                             <div className="flex-1 h-[calc(100vh-16rem)]">
-                                <TextArea text={text.split("\n")} variant="none" />
+                                <TextArea text={text.split("\n")} />
                             </div>
                         </div>
                         <div className="flex">

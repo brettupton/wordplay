@@ -1,11 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { NextResponse, type NextRequest } from 'next/server'
-import getPDFText from '@/utils/pdf'
-import fileSys from '@/utils/fileSys'
-import sqlDB from '@/utils/sqlDB'
-import { tokenizer } from '@/utils/tokenizer'
-import splitSyllables from '@/utils/syllables'
+import { pdf, fileSys, sqlDB, tokenizer, _phonetic } from '@/utils'
 
 const cmuDB = new sqlDB('cmu')
 
@@ -16,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (query) {
         try {
             const queryResult = await cmuDB.queryOne(query)
-            const syllables = splitSyllables(queryResult)
+            const syllables = _phonetic.splitSyllables(queryResult)
 
             return new Response(JSON.stringify({ queryResult, syllables }), { status: 200 })
         } catch (err: any) {
@@ -47,7 +43,7 @@ export async function POST(request: Request) {
         const uploadPath = path.join(process.cwd(), 'public', 'uploads')
 
         try {
-            const text = await getPDFText(file)
+            const text = await pdf(file)
             let phoneticText = text
             const uniqueWordTokens = tokenizer.wordTokens('unique')
             const phonetics = await cmuDB.queryMany(uniqueWordTokens)

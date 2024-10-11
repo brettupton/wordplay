@@ -1,15 +1,17 @@
+// http://korpus.uib.no/icame/manuals/BROWN/INDEX.HTM#bc6
+
 import { Suspense } from "react"
-import PageTable from "@/components/PageTable"
+import { sqlDB } from "@/utils"
+import { Spinner, PageTable } from "@/components"
 
 export default async function Brown() {
-    const response = await fetch(`http://localhost:3000/api/tags?page=1&limit=100`, {
-        cache: 'no-store',
-    })
-
-    const { dbResults, totalRows } = await response.json()
+    const brownDB = new sqlDB('brown')
+    const dbResults = await brownDB.getPaginated(0, 100)
+    const totalRows = await brownDB.getNumRows()
+    brownDB.close()
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner />}>
             <div className="flex">
                 <PageTable initial={dbResults} total={totalRows} />
             </div>
