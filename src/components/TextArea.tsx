@@ -1,49 +1,47 @@
 'use client'
 
-import { useEffect, useState } from "react"
-
 interface TextAreaProps {
-    text: string[] | string[][]
-    options?: {
-        type: "alternate"
-    }
+    text: string | string[] | string[][]
 }
 
-export default function TextArea({ text, options }: TextAreaProps) {
-    const [displayText, setDisplayText] = useState<string[] | string[][]>(text)
-
-    // useEffect(() => {
-    //     const lines = createLines(text.flat())
-    //     setDisplayText([...lines])
-    // }, [])
-
-    // const createLines = (flatArr: string[]) => {
-    //     const lines: string[][] = []
-    //     let line: string[] = []
-
-    //     flatArr.forEach(word => {
-    //         // Check for end of sentence to push to line and create new line
-    //         if (word.indexOf(".") > -1) {
-    //             line.push(word + " ")
-    //             lines.push(line)
-    //             line = []
-    //             return
-    //         }
-    //         line.push(word + " ")
-    //     })
-    //     lines.push(line)
-
-    //     return lines
-    // }
+export default function TextArea({ text }: TextAreaProps) {
+    const textDisplay = () => {
+        if (Array.isArray(text) && Array.isArray(text[0])) {
+            return (
+                text.map((element, index) => (
+                    <div className="flex flex-col px-2" key={index}>
+                        <div className="flex">
+                            {element[0]}
+                        </div>
+                        <div className="flex justify-center text-xs text-gray-400">
+                            {element[1]}
+                        </div>
+                    </div>
+                ))
+            )
+        } else if (Array.isArray(text)) {
+            return (
+                text.map((element, index) => (
+                    <div className="flex flex-col px-2" key={index}>
+                        <div className="flex">
+                            {element}
+                        </div>
+                    </div>
+                ))
+            )
+        } else {
+            return (
+                <div className="flex">
+                    {text}
+                </div>
+            )
+        }
+    }
 
     return (
         <div
-            className="h-[calc(100vh-9rem)] overflow-y-scroll leading-tight block p-2.5 w-full text-sm bg-gray-700 rounded-lg border border-gray-600 focus:ring-gray-500 focus:border-gray-500">
-            {displayText.map((line, index) => (
-                <div key={index} className={`${options?.type === "alternate" ? (index % 2) === 1 ? 'text-gray-400 mb-2' : 'text-white' : 'text-white'}`}>
-                    {line}
-                </div>
-            ))}
+            className="flex flex-wrap h-[calc(100vh-9rem)] overflow-y-scroll leading-tight block p-2.5 w-full text-sm bg-gray-700 rounded-lg border border-gray-600 focus:ring-gray-500 focus:border-gray-500">
+            {textDisplay()}
         </div>
     )
 }

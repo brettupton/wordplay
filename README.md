@@ -11,8 +11,7 @@ The primary way of interaction is by uploading a PDF, collecting tokens from the
 ## Features
 
 - Frequency
-- N-Gram
-- Markov Chain
+- Markov Chains
 - Phonetics
 - More to come!
 

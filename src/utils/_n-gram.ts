@@ -1,21 +1,24 @@
-import tokenizer from "./tokenizer"
 
-const nGramCount = (text: string, n: number) => {
-    const words = tokenizer.wordTokens(text)
-    const nGrams: { [nGram: string]: number } = {}
+const nGramCount = (tokens: string[], n: number) => {
+    let nGramsObj: { [nGram: string]: number } = {}
+    const nGramsArr: [string[], number][] = []
 
-    for (let i = 0; i < (words.length - n); i++) {
-        const nGram = words.slice(i, i + n)
-        const curr = JSON.stringify(nGram).toLowerCase()
+    for (let i = 0; i < (tokens.length - n); i++) {
+        const nGram = tokens.slice(i, i + n)
+        const curr = JSON.stringify(nGram)
 
-        if (!nGrams[curr]) {
-            nGrams[curr] = 1
+        if (!nGramsObj[curr]) {
+            nGramsObj[curr] = 1
         } else {
-            nGrams[curr]++
+            nGramsObj[curr]++
         }
     }
 
-    return Object.entries(nGrams)
+    Object.entries(nGramsObj).forEach((nGram) => {
+        nGramsArr.push([JSON.parse(nGram[0]) as string[], nGram[1]])
+    })
+
+    return nGramsArr
 }
 
 

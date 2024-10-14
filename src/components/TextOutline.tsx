@@ -8,7 +8,7 @@ interface TextOutlineProps {
 
 export default function TextOutline({ title, content, width }: TextOutlineProps) {
     return (
-        <div className={`relative border-2 border-white p-3 m-4 w-full`}>
+        <div className={`relative border-2 border-white p-3 m-4 w-${width ?? "full"}`}>
             <div className="absolute -top-3 left-3 bg-black px-1 text-sm">
                 {title}
             </div>

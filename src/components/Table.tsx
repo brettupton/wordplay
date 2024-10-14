@@ -4,13 +4,14 @@ import { FixedSizeGrid as Grid } from 'react-window'
 import { useState, useEffect } from 'react'
 
 interface TableProps {
-    data: [string, number][]
+    data: [string | string[], number][]
     colLabels: string[]
+    setSelection?: (selection: string | string[]) => void
 }
 
-export default function Table({ data, colLabels }: TableProps) {
+export default function Table({ data, colLabels, setSelection }: TableProps) {
     const [windowSize, setWindowSize] = useState<WindowSize>({ width: 0, height: 0 })
-    const [tableData, setTableData] = useState<[string, number][]>(data)
+    const [tableData, setTableData] = useState<TableProps["data"]>(data)
     const [tableSort, setTableSort] = useState<boolean>(false)
 
     useEffect(() => {
@@ -73,13 +74,19 @@ export default function Table({ data, colLabels }: TableProps) {
                 rowHeight={35}
                 width={windowSize.width / 2}>
                 {({ columnIndex, rowIndex, style }) => (
-                    <div style={style} className={`text-${columnIndex === 0 ? 'start' : 'center'} px-5 py-2 border-b border-white text-sm`}>
+                    <button style={style}
+                        className={`text-${columnIndex === 0 ? 'start' : 'center'} px-5 py-2 border-b border-white text-sm`}
+                        onClick={() => setSelection && setSelection(tableData[rowIndex][0])}
+                    >
                         {columnIndex === 0 ?
-                            tableData[rowIndex][0]
+                            Array.isArray(tableData[rowIndex][0]) ?
+                                tableData[rowIndex][0].join(" ")
+                                :
+                                tableData[rowIndex][0]
                             :
                             tableData[rowIndex][1]
                         }
-                    </div>
+                    </button>
                 )}
             </Grid>
         </div>

@@ -42,6 +42,8 @@ export default function Frequency() {
     const handleRefresh = () => {
         setFreq(undefined)
         setText("")
+        setCasing(false)
+        setStopWords(false)
     }
 
     return (
@@ -61,7 +63,7 @@ export default function Frequency() {
                                 }
                             </div>
                             <div className="flex-1 h-[calc(100vh-16rem)]">
-                                <TextArea text={text.split("\n")} />
+                                <TextArea text={text.split(".")} />
                             </div>
                         </div>
                         <div className="flex">

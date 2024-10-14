@@ -14,34 +14,43 @@ export default async function getPDFText(file: File): Promise<string> {
             const page = await pdf.getPage(i)
             const textContent = await page.getTextContent({ includeMarkedContent: false })
 
-            // Group text items by lines based on their vertical position
-            const lines: string[] = []
-            let currentLine: string[] = []
-            let lastY: null | number = null
-            const lineThreshold = 5
+            // Directly concatenate all text items without grouping
+            const pageText = textContent.items
+                .filter(item => 'str' in item) // Ensure item has text
+                .map(item => item.str)
+                .join(' ') // Join text items with a space
 
-            textContent.items.forEach(item => {
-                if ('str' in item) {
-                    // Group text items into lines
-                    if (lastY === null || Math.abs(lastY - item.transform[5]) < lineThreshold) {
-                        currentLine.push(item.str)
-                    } else {
-                        lines.push(currentLine.join(' '))
-                        currentLine = [item.str]
-                    }
-                    lastY = item.transform[5]
-                }
-            })
-
-            // Add last line
-            if (currentLine.length > 0) {
-                lines.push(currentLine.join(' '))
-            }
-
-            combinedText += lines.join('\n') + '\n'
+            combinedText += pageText + ' ' // Add a space between pages
         }
 
-        return combinedText
+        return combinedText.trim() // Remove extra spaces at the end
+
+        // // Group text items by lines based on their vertical position
+        // const lines: string[] = []
+        // let currentLine: string[] = []
+        // let lastY: null | number = null
+        // const lineThreshold = 2
+
+        // textContent.items.forEach(item => {
+        //     if ('str' in item) {
+        //         // Group text items into lines
+        //         if (lastY === null || Math.abs(lastY - item.transform[5]) < lineThreshold) {
+        //             currentLine.push(item.str)
+        //         } else {
+        //             lines.push(currentLine.join(' '))
+        //             currentLine = [item.str]
+        //         }
+        //         lastY = item.transform[5]
+        //     }
+        // })
+
+        // // Add last line
+        // if (currentLine.length > 0) {
+        //     lines.push(currentLine.join(' '))
+        // }
+
+        // combinedText += lines.join('\n') + '\n' 
+        // }
     } catch (error) {
         console.error('Error extracting text:', error)
         throw error

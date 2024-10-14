@@ -46,7 +46,7 @@ export default class sqlDB {
 
                 if (word) {
                     // Remove all punctuation from word first
-                    let searchWord = word.trim().replace(/[^\w\s]/gm, "")
+                    let searchWord = word.replace(/[^\w\s]/gm, " ").trim()
                     if (this.dbType === 'cmu') {
                         searchWord = searchWord.toUpperCase()
                     }

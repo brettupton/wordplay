@@ -1,7 +1,6 @@
 import path from 'path'
 import { NextRequest } from 'next/server'
-import wordFrequency from '@/utils/_frequency'
-import fileSys from '@/utils/fileSys'
+import { _frequency, fileSys } from '@/utils'
 
 export async function GET(request: NextRequest) {
     try {
@@ -10,7 +9,7 @@ export async function GET(request: NextRequest) {
         const casing: boolean = JSON.parse(searchParams.get('casing') as string)
 
         const text = await fileSys.readDir(path.join(process.cwd(), 'public', 'uploads'))
-        const freq = wordFrequency(text, stopWords, casing)
+        const freq = _frequency(text, stopWords, casing)
 
         return new Response(JSON.stringify(freq), { status: 200 })
     } catch (error: any) {
@@ -23,7 +22,7 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData()
         const file = formData.get('file') as File
         const text = await fileSys.getFileText(file)
-        const freq = wordFrequency(text)
+        const freq = _frequency(text)
 
         return new Response(JSON.stringify({ text, freq }), { status: 200 })
     } catch (error: any) {

@@ -94,7 +94,7 @@ export default function FileForm({ updateStates, route }: FileFormProps) {
                                 Upload PDF/TXT
                             </label>
                             <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                                className="shadow appearance-none border rounded w-full p-2 leading-tight focus:outline-none focus:shadow-outline"
                                 id="file"
                                 type="file"
                                 accept=".pdf, .txt"
@@ -110,6 +110,7 @@ export default function FileForm({ updateStates, route }: FileFormProps) {
                                 value={exSelection}
                             >
                                 <option defaultValue={"Select"}>Select</option>
+                                <option value="rotk-pg1.txt">Return of the King - Page 1</option>
                                 <option value="wizard-pg1.txt">A Wizard of Earthsea - Page 1</option>
                                 <option value="hobbit-pg1.txt">The Hobbit - Page 1</option>
                             </select>

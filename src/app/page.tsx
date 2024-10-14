@@ -2,7 +2,7 @@ import { WordCloud } from '@/components'
 import Image from 'next/image'
 
 export default function Home() {
-    const routes = ['frequency', 'markov', 'n-gram', 'phonetics', 'tags']
+    const routes = ['frequency', 'markov', 'phonetics', 'tags']
 
     return (
         <WordCloud centerImage={

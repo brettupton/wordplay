@@ -9,7 +9,11 @@ export default function Tags() {
     const updateStates = (result: any) => {
         const alternatedTags = alternateTags(result.tags)
 
-        setTags([...alternatedTags])
+        const newTags = result.tags.map((tag: POSTuple) => {
+            return [tag[0], tag[1]]
+        })
+
+        setTags([...newTags])
     }
 
     const handleRefresh = () => {
@@ -17,6 +21,7 @@ export default function Tags() {
     }
 
     const alternateTags = (tags: POSTuple[]): string[][] => {
+        // Formats tag array as [[...words], [...tags]] alternating for page display
         const alternated: string[][] = []
 
         while (tags.length > 0) {

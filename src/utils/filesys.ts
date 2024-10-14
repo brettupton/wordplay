@@ -44,10 +44,11 @@ const readFileInDir = (dirPath: string, fileName: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         try {
             if (fs.existsSync(dirPath)) {
-                fs.readFile(path.join(dirPath, fileName), (err, data) => {
+                fs.readFile(path.join(dirPath, fileName), async (err, data) => {
                     if (err) {
                         throw new Error("Error reading file")
                     }
+                    await replaceFile(uploadPath, fileName, data.toString())
                     resolve(data.toString())
                 })
             } else {

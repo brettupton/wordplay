@@ -3,12 +3,13 @@ import { Inter } from "next/font/google"
 import Link from 'next/link'
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "WordPlay",
-  description: "",
-};
+  description: "Researching and visualizing certain aspects of NLP",
+
+}
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
@@ -21,8 +22,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/" className="text-white hover:text-gray-200 transition-colors">Home</Link>
                 <Link href="/frequency" className="text-white hover:text-gray-200 transition-colors">Frequency</Link>
                 <Link href="/markov" className="text-white hover:text-gray-200 transition-colors">Markov</Link>
-                <Link href="/n-gram" className="text-white hover:text-gray-200 transition-colors">N-gram</Link>
                 <Link href="/phonetics" className="text-white hover:text-gray-200 transition-colors">Phonetics</Link>
+                <Link href="/tags" className="text-white hover:text-gray-200 transition-colors">Tags</Link>
               </div>
             </nav>
           </header>

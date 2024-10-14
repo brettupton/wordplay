@@ -9,16 +9,16 @@ const punctTokens = (text: string) => {
     return tokens
 }
 
-const wordTokens = (text: string, type?: string) => {
-    const pageNums = text.replace(/(?:\\n+\d+)/gm, '')
-    const markup = pageNums.replace(/(?:\\+[a-z])/gm, ' ')
-    const quotes = markup.replace(/“|”|"/gm, " \" ")
-    const hyphens = quotes.replace(/-\s*/g, '')
-    const punct = hyphens.replace(/[^a-zA-z]/g, " ")
-    const double = punct.replace(/\s{2,}/g, ' ')
-    const tokens = double.split(" ").filter(token => token !== "")
+const wordTokens = (text: string, unique?: boolean) => {
+    text =
+        // Non-word characters
+        text.replace(/\W/g, " ")
+            // Two or more spaces
+            .replace(/\s{2, }/g, " ")
 
-    if (type === 'unique') {
+    const tokens = text.split(" ").filter(token => token !== "")
+
+    if (unique) {
         return Array.from(new Set(tokens))
     }
 
@@ -35,11 +35,17 @@ const sentenceTokens = (text: string) => {
 }
 
 const spaceTokens = (text: string) => {
-    const pageNums = text.replace(/(?:\\n+\d+)/gm, '')
-    const markup = pageNums.replace(/(?:\\+[a-z])/gm, ' ')
-    const hyphens = markup.replace(/\-{2,}/gm, '')
-    const double = hyphens.replace(/\s{2,}/g, ' ')
-    const tokens = double.split(" ").filter(token => token !== "")
+    text =
+        // Page Numbers
+        text.replace(/(?:\\n+\d+)/gm, '')
+            // Markup
+            .replace(/\\+[a-z]/gm, " ")
+            // More than 2 hyphens
+            .replace(/\-{2,}/gm, '')
+            // More than 2 spaces
+            .replace(/\s{2,}/g, ' ')
+
+    const tokens = text.split(" ").filter(token => token !== "")
 
     return tokens
 }
